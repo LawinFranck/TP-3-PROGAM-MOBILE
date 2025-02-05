@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
-import '../page2.dart';
-
+import 'package:tp3/page2.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SaveContactPage extends StatefulWidget {
+  final String name;
+  final String surname;
+  final String category;
+  final String phone;
   final List<Map<String, String>> contacts;
 
-  const SaveContactPage({super.key, required this.contacts});
+  const SaveContactPage({
+    super.key,
+    required this.name,
+    required this.surname,
+    required this.category,
+    required this.phone,
+    required this.contacts,
+  });
 
   @override
   _SaveContactPageState createState() => _SaveContactPageState();
@@ -17,42 +28,28 @@ class _SaveContactPageState extends State<SaveContactPage> {
   @override
   void initState() {
     super.initState();
-    contacts = List.from(widget.contacts); // Initialisation correcte
-    requestPermission();
+    contacts = widget.contacts;
   }
 
-  Future<void> requestPermission(dynamic Permission) async {
-    if (await Permission.contacts.request().isGranted) {
-      fetchContacts();
-    }
-  }
-
-  Future<void> fetchContacts() async {
-    Iterable<Contact> fetchedContacts = await ContactsService.getContacts();
-    setState(() {
-      contacts = fetchedContacts.map((contact) => {
-        'name': contact.givenName ?? '',
-        'surname': contact.familyName ?? '',
-        'phone': contact.phones?.isNotEmpty == true ? contact.phones!.first.value ?? '' : ''
-      }).toList();
-    });
-  }
-
-  void addContact(String name, String surname, String phone) async {
-    Contact newContact = Contact(
-      givenName: name,
-      familyName: surname,
-      phones: [Item(label: 'mobile', value: phone)],
-    );
-
-    await ContactsService.addContact(newContact);
+  void addContact(String name, String surname, String phone) {
     setState(() {
       contacts.add({
-        'name': name,
-        'surname': surname,
-        'phone': phone,
+        "name": name,
+        "surname": surname,
+        "phone": phone,
       });
     });
+  }
+
+  void _callContact(String phone) async {
+    final Uri url = Uri(scheme: "tel", path: phone);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Impossible de passer l'appel")),
+      );
+    }
   }
 
   @override
@@ -62,12 +59,16 @@ class _SaveContactPageState extends State<SaveContactPage> {
         title: const Text("Contacts"),
         actions: [
           IconButton(
+            onPressed: () {
+              // Fonctionnalité de recherche à implémenter
+            },
             icon: const Icon(Icons.search),
-            onPressed: () {},
           ),
           IconButton(
+            onPressed: () {
+              // Fonctionnalité du menu à implémenter
+            },
             icon: const Icon(Icons.more_vert),
-            onPressed: () {},
           ),
         ],
       ),
@@ -75,9 +76,7 @@ class _SaveContactPageState extends State<SaveContactPage> {
         onPressed: () async {
           final newContact = await Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => AddContactPage(contacts: contacts),
-            ),
+            MaterialPageRoute(builder: (context) => AddContactPage(contacts: contacts)),
           );
 
           if (newContact != null && newContact is Map<String, String>) {
@@ -126,25 +125,4 @@ class _SaveContactPageState extends State<SaveContactPage> {
       ),
     );
   }
-
-  void _callContact(String phoneNumber) {
-    // Implémentation de l'appel (par exemple en utilisant url_launcher)
-  }
-}
-
-class Item {
-}
-
-class ContactsService {
-  static getContacts() {}
-
-  static addContact(Contact newContact) {}
-}
-
-class Contact {
-  get givenName => null;
-
-  get familyName => null;
-
-  get phones => null;
 }

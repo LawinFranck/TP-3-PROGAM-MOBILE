@@ -33,7 +33,13 @@ class _AddContactPageState extends State<AddContactPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => SaveContactPage(contacts: updatedContacts),
+          builder: (context) => SaveContactPage(
+            contacts: updatedContacts,
+            name: newContact['name']!,
+            surname: newContact['surname']!,
+            category: newContact['category']!,
+            phone: newContact['phone']!,
+          ),
         ),
       );
     }
