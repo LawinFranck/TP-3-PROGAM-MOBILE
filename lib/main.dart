@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AddContactPage()),
+                MaterialPageRoute(builder: (context) => const AddContactPage(contacts: [],)),
               );
             },
             icon: const Icon(Icons.search),
@@ -44,7 +44,7 @@ class _HomeState extends State<Home> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AddContactPage()),
+                MaterialPageRoute(builder: (context) => const AddContactPage(contacts: [],)),
               );
             },
             icon: const Icon(Icons.more_vert),
@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AddContactPage()),
+            MaterialPageRoute(builder: (context) => const AddContactPage(contacts: [],)),
           );
         },
         backgroundColor: const Color(0xFF00B2FF),

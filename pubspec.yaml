@@ -1,5 +1,5 @@
 name: tp3
-description: "Tp 3 gestion des contacts"
+description: "Tp 3 gestation des contacts"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
