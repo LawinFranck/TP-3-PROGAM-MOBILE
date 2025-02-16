@@ -1,6 +1,6 @@
-# tp3
+# tp3_Maquettes
 
-Tp 3 gestion des contacts
+Tp 3 gestion des contacts élaboré par Franck Loïs et Derrick 
 
 ## Getting Started
 
